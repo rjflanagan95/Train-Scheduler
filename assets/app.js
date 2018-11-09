@@ -25,11 +25,19 @@ database.ref().on("child_added", function(snapshot) {
     var newFreq = $("<td>");
     newFreq.text(shortcut.frequency)
 
+    var firstTime = shortcut.firstTime;
+    var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
+    var currentTime = moment(currentTime).format("HH:mm");
+    var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+    var timeRemaining = (diffTime % shortcut.frequency);
+    var minutesTilArrival = shortcut.frequency -timeRemaining;
+    var nextTrain = moment().add(minutesTilArrival, "minutes");
+
     var nextArrival = $("<td>");
-    nextArrival.text("????");
+    nextArrival.text(moment(nextTrain).format("HH:mm"));
 
     var minutesAway = $("<td>");
-    minutesAway.text("????");
+    minutesAway.text(minutesTilArrival);
 
     newRow.append(newTrain);
     newRow.append(newDest);
