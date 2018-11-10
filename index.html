@@ -35,13 +35,14 @@
                         <h5>Current Train Schedule</h5>
                     </div>
                     <div class="card-body">
-                        <table class="table">
+                        <table class="table text-center">
                             <thead>
                                 <th scope="col">Train Name</th>
                                 <th scope="col">Destination</th>
                                 <th scope="col">Frequency (min)</th>
                                 <th scope="col">Next Arrival</th>
                                 <th scope="col">Minutes Away</th>
+                                <th scope="col">Remove</th>
                             </thead>
                             <tbody id="trains-table">
                             </tbody>
@@ -62,19 +63,19 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="trainNameInput">Train Name</label>
-                            <input type="name" class="form-control" id="train-name-input">
+                            <input type="text" required="required" class="form-control" id="train-name-input">
                         </div>
                         <div class="form-group">
                             <label for="destinationInput">Destination</label>
-                            <input type="desination" class="form-control" id="destination-input">
+                            <input type="text" required="required" class="form-control" id="destination-input">
                         </div>
                         <div class="form-group">
                             <label for="firstTimeInput">First Train Time (HH:mm - military time)</label>
-                            <input type="time" class="form-control" id="first-time-input">
+                            <input type="time" required="required" class="form-control" id="first-time-input">
                         </div>
                         <div class="form-group">
                             <label for="frequencyInput">Frequency (min)</label>
-                            <input type="frequency" class="form-control" id="frequency-input">
+                            <input type="number" required="required" class="form-control" id="frequency-input">
                         </div>
                         <button type="submit" class="btn btn-dark" id="form-submit-btn">Submit</button>
                     </div>
