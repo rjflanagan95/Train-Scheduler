@@ -15,6 +15,7 @@ var database = firebase.database();
 $("#form-submit-btn").on("click", function(event) {
     event.preventDefault();
 
+    // grab the input from the form
     var trainName = $("#train-name-input").val().trim();
     var destination = $("#destination-input").val().trim();
     var trainTime = $("#first-time-input").val().trim();
@@ -23,6 +24,7 @@ $("#form-submit-btn").on("click", function(event) {
     // if any part of the train information is missing, don't add it to the database
     if (trainName === "" || destination === "" || trainTime === "" || freq === "") {
         alert("Please include all train information before submitting!")
+    // else add it to the database
     } else {
         database.ref().push({
             name: trainName,
@@ -46,13 +48,11 @@ database.ref().on("value", function(snapshot) {
 
 function refreshTrains(snap) {
     // when a new train is added, loop through the object and reprint the trains on the table
-    // mostly did it this way so I could potentially introduce a way to sort the table so that the trains arriving soonest appear at the top of the table, but I'm not sure how to accomplish that short of storing `minutesAway` in Firebase
+    // mostly did it this way so I could potentially introduce a way to sort the table so that the trains arriving soonest appear at the top of the table, but I wasn't able to figure that out
     $("#trains-table").empty();
 
     for (var i in snap.val()) {
         var shortcut = (snap.val())[i];
-        console.log("Each train:")
-        console.log(shortcut);
 
         // create a new row
         var newRow = $("<tr>");
@@ -80,8 +80,11 @@ function refreshTrains(snap) {
 
         var removeBtn = $("<button>");
         removeBtn.text("Remove Train");
-        removeBtn.attr("class", "btn btn-dark remove-button");
+        removeBtn.attr("class", "btn btn-dark btn-sm remove-button");
+        // storing the Firebase id as the id of the remove button for easy access later
         removeBtn.attr("id", i);
+        var btnCell = $("<td>");
+        btnCell.append(removeBtn);
     
         // append all the new data to the row
         newRow.append(newTrain);
@@ -89,16 +92,18 @@ function refreshTrains(snap) {
         newRow.append(newFreq);
         newRow.append(nextArrival);
         newRow.append(minutesAway);
-        newRow.append(removeBtn);
+        newRow.append(btnCell);
+
+        // even the small button is too big to align properly with the text so it was necessary to include margins
+        newRow.attr("style", "margin: 5px 0px 5px 0px");
     
         // append the row to the timetable
         $("#trains-table").append(newRow);
     }
 }
 
-$(document).on("click", ".remove-button",  function() {
-    console.log("removed");
-    console.log($(this).attr("id"));
 
+$(document).on("click", ".remove-button",  function() {
+    // the id of the remove button is the same as the id of the train in the database
     database.ref().child($(this).attr("id")).remove();
 });
